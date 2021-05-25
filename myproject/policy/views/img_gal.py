@@ -5,7 +5,7 @@ from flask.templating import render_template
 from werkzeug.utils import redirect
 
 
-bp = Blueprint('img_gallary', __name__, url_prefix='/image')
+bp = Blueprint('img_gallery', __name__, url_prefix='/image')
 
 
 # 데이터 어떻게 받을 것인가?
@@ -63,7 +63,7 @@ def get_gallery():
     # image_namesㅇ에 넣는다.
     
     # return print(image_names)
-    return render_template('image_gal/galla.html', image_names = image_names)
+    return render_template('image_gal/gallery.html', image_names = image_names)
     # return render_template('image_gal/gallary.html', image_names = image_names)
     #  image_names에 넣어서 gallary.html로 전달 html에서 사용할 것임..
 
