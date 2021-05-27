@@ -567,14 +567,16 @@ function createTemplate(product) {
                 </div>
                 </a>
             </div>
-            <div class="text-center pt-4">
-                <h5>#가나 #다라 #마바</h5>
+            <div class="text-center pt-4"><br>
+                <!-- <h5>#가나 #다라 #마바</h5> -->
                 <!-- <p><span class="mr-1"><strong>#해시태그들어갈자리다 이말이야</strong></span></p> -->
                 <p>
-                    <span class="badge badge-primary">#One</span>
-                    <span class="badge badge-primary">#Two</span>
+                  {% for hash_tag in hash_tags%}
+                    <span class="badge badge-primary">{{hash_tag}}</span>
+                    <!-- <span class="badge badge-primary">#Two</span>
                     <span class="badge badge-primary">#Three</span>
-                    <span class="badge badge-primary">#Four</span>
+                    <span class="badge badge-primary">#Four</span> -->
+                  {% endfor %}
 
                 </p>
             </div>
