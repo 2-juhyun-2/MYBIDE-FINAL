@@ -1,5 +1,5 @@
 from warnings import showwarning
-from flask import Blueprint,request
+from flask import Blueprint,request,jsonify
 import os
 from flask.helpers import send_from_directory, url_for
 from flask.templating import render_template
@@ -21,100 +21,100 @@ bp = Blueprint('img_gallery', __name__, url_prefix='/image')
 
 # 데이터 어떻게 받을 것인가?
 
-@bp.route('/',methods=('GET', 'POST'))
-def search_image():
+@bp.route('/')
+def home():
     
-    args_dict = request.args.to_dict()
-    # return redirect('/gallary')
-    # 검색 수정중... 이미지 파일 검색안됨..
-
-
-    # 검색어 받아
-    print( args_dict)
-
+   
     # return send_from_directory('policy/image',filename), 
-    return render_template('image_gal/complete.html')
+    return render_template('image_gal/gallery.html')
     
 
-@bp.route('/gal/<filename>')
-def send_image(filename):
-    return send_from_directory("image",filename)
-    # image 폴더에 있는 사진들을 개별로 조회가능
+
+# @bp.route('/gallary', methods=['POST'])
+# def post_articles():
+#     # 1. 클라이언트로부터 데이터를 받기
+#     # 2. meta tag를 스크래핑하기
+#     # 3. mongoDB에 데이터 넣기
+#     return jsonify({'result': 'success', 'msg': 'POST 연결되었습니다!'})
+
+@bp.route('/gallery', methods=['POST'])
+def post_articles():
+    # 1. 클라이언트로부터 데이터를 받기
+    # 2. meta tag를 스크래핑하기
+    # 3. mongoDB에 데이터 넣기
+    url_receive = request.form['url_give']
+    print(url_receive)
+    print(type(url_receive))
+    return jsonify({'result': 'success', 'msg': 'POST 연결되었습니다!'})
 
 
-@bp.route('/gallary', methods=('GET', 'POST'))
-def get_gallery():
-    # print(os.getcwd())
-    args_dict = request.args.get('keyword')
+@bp.route('/gallery', methods=['GET'])
+def read_articles():
+    # 1. mongoDB에서 _id 값을 제외한 모든 데이터 조회해오기 (Read)
+    # result = list(db.articles.find({}, {'_id': 0}))
 
-    # print(args_dict)
-    # print(type(args_dict))
+    # print(url_receive)
+    # 검색 값
 
-    image_names = os.listdir('policy/image')
+
+    image_names = ['2a6e42f0-5b37-4c6d-8cb8-fc15531139d2.jpg','34d9f53a-607f-44e1-8e9f-690489962430.jpg','9b6f94aa-2c40-4ef4-819b-d4a425336874.jpg','ddc24e5c-092d-4d24-90d4-06a3d7054abd.jpg','hair.jpg','KakaoTalk_20200521_021700195.jpg','mynameisjihye.jpg']
+    # image_names  모든 이미지 리스트
+
+    image_list = ['9b6f94aa-2c40-4ef4-819b-d4a425336874.jpg','ddc24e5c-092d-4d24-90d4-06a3d7054abd.jpg','hair.jpg']
+    # 검색한 해시태그가 있는 이미지명 
+
+
+    # print(image_list[1])
+    result=[]
+    # print(len(image_list))
+
+    hash_tag     = []
     images_path = []
-    ad = []
 
-
-    if args_dict == None:
-        args_dict = os.listdir('policy/image')
-        return render_template('image_gal/gallery.html', image_names = image_names)
-    else:
-        # args_dict = args_dict['keyword']
-        # args_dict = args_dict + '.jpg'
-        # args_dict == image_path
-        image_list = ['1.jpg','2.jpg']
-
-        image_='2.jpg'
-        # for image_ in image_list:
-            # print(image_)
-        # ad = hashTag().show_all_hashtag(image_)
-        # append로 추가해줘얌
-        # hashTag().k(image_list)
-        # for image_ in image_list:
-            
-        #     ad =  hashTag().show_all_hashtag(image_)
-        # print('해쉬태그',ad)
-        # for문을 쓰면 str변수를 못읽어...mongo find에서..
-
-
-
-        for image_ in image_list:
-            if image_ in image_names:
-                images_path.append(image_)
-                ad.append(hashTag().show_all_hashtag(image_))
-        print('ad',ad)
-            # print(list(db.users.find({"image.image_path":image_})))
-                # a = db.users.find({"image.image_path":image},{"_id":0,"image.image_path":1,"image.tag":1})
-                # print(a)
-                # print(image)
-
-                # hashTag().show_all_hashtag(image)
-                # k = hashTag().show_all_hashtag(image)
-                # hashTag().k(image)
-                # print(k)
-
-                
-        #print(images_path)
-        
-
-        # args_dict = args_dict + '.png'
-            # if args_dict in image_names:
-            #     image_names = [args_dict]
-            # else:
-            #     return "No images"
-
-        
-        
-    # polict의 image파일의 리스트
-    # 검색어로 메타태그 조회
-    # 메타태그 포함된 이미지 path/이름 가져와
-    # 그것만 리스트에 넣어 준다.
-    # image_namesㅇ에 넣는다.
+    for image_ in image_list:
+        if image_ in image_names:
+            images_path.append(image_)
+            hash_tag.append(hashTag().show_all_hashtag(image_))
+    print('hash_tag',hash_tag)
     
-    # return print(image_names)
-    return render_template('image_gal/gallery.html', image_names = images_path ,hash_tags =ad)
-    # return render_template('image_gal/gallary.html', image_names = image_names)
-    #  image_names에 넣어서 gallary.html로 전달 html에서 사용할 것임..
+    return jsonify({'result': 'success', 'articles': result, 'image_list':image_list,'hash_tag':hash_tag})
+
+
+
+# @bp.route('/gallary', methods=('GET'))
+# def get_gallery():
+#     # print(os.getcwd())
+#     args_dict = request.args.get('keyword')
+
+#     print(args_dict)
+#     # print(type(args_dict))
+
+#     image_names = os.listdir('policy/image')
+#     images_path = []
+#     ad = []
+
+
+#     if args_dict == None:
+#         args_dict = os.listdir('policy/image')
+#         return render_template('image_gal/gallery.html', image_names = image_names)
+#     else:
+
+#         image_list = ['1.jpg','2.jpg']
+
+#         image_='2.jpg'
+ 
+
+
+
+#         for image_ in image_list:
+#             if image_ in image_names:
+#                 images_path.append(image_)
+#                 ad.append(hashTag().show_all_hashtag(image_))
+#         print('ad',ad)
+
+    
+#     # return print(image_names)
+#     return render_template('image_gal/gallery.html', image_names = images_path ,hash_tags =ad)
 
 
 

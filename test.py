@@ -24,7 +24,7 @@ def k(a):
 # print(db.users.aggregate( [ { $project : {_id:0, image: 1 } } ] ).pretty())
 # class hashTag:
 #     def show_all_hashtag(self,image_name):
-a = list(db.users.find({"image.image_path":image_name},{"_id":0,"image.image_path":1,"image.tag":1}))
+a = list(db.users.find({"image.image_path":'hair.jpg'},{"_id":0,"image.image_path":1,"image.tag":1}))
 print(a)
 a = str(a)
 a = re.sub('[-=+,#/\?:^$@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]',"",a)
@@ -48,7 +48,7 @@ for i in range(1,len(a)):
             b.remove('')
 del b[0]
 print(type(b))
-print(b)
+print(b[0])
 
 
 # a = hashTag()

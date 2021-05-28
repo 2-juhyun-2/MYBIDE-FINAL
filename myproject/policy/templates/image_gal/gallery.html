@@ -36,9 +36,125 @@
 <script>
 
 $(document).ready(() => {
-  $(".mdb-select").materialSelect();
-  getProducts();
+  // $(".mdb-select").materialSelect();
+  // getProducts();
+  $("#card-box").html("");
+  showArticles();
+  // $("keyword").submit("");
+  // showA();
 })
+
+
+
+// function postArticle() {
+//   $.ajax({
+//     type: "POST",
+//     url: "/image/gallary",
+//     data: {},
+//     success: function (response) { // 성공하면
+//       if (response['result'] == 'success') {
+//         alert(response['msg']);
+//       }
+//     }
+//   })
+// }
+function postArticle() {
+  // 1. 유저가 입력한 데이터를 #post-url과 #post-comment에서 가져오기
+  let url = $("#post-url").val();
+  let comment = $("#post-comment").val();
+
+  // 2. memo에 POST 방식으로 메모 생성 요청하기
+  $.ajax({
+    type: "POST", // POST 방식으로 요청하겠다.
+    url: "/image/gallery", // /memo라는 url에 요청하겠다.
+    data: { url_give: url, comment_give: comment}, // 데이터를 주는 방법
+    success: function(response){ // 성공하면
+      if (response["result"] == "success") {
+        alert("포스팅 성공!");
+				// 3. 성공 시 페이지 새로고침하기
+        window.location.reload();
+      } else {
+        alert("서버 오류!")
+      }
+    }
+  })
+}
+
+
+function showArticles() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/image/gallery",
+                        data: {},
+                        success: function(response){
+                        let keyword = response["keyword"] // ex) 
+                        let articles = response["articles"];
+                        let image_list = response["image_list"]
+                        let hash_tag = response['hash_tag']
+                       
+                          console.log(image_list)
+                          console.log(hash_tag[0])
+                          console.log(hash_tag[0].length)
+
+                          // let a = String(hash_tag[0])
+                          // console.log(typeof(a))
+                          // let regexFor
+                          // let b = a.replaceAll(',',' #')
+                          // console.log(b)
+                          let hash_tag_str = []
+
+                          for (let j = 0; j < hash_tag.length; j++){
+                            console.log(hash_tag[j])
+                            let a = String(hash_tag[j])
+                            console.log(typeof(a))
+                            let regexFor
+                            let b = a.replaceAll(',',' #')
+                            // console.log(b)
+                            hash_tag_str.push(b)
+                            console.log(hash_tag_str)
+                            console.log(typeof(hash_tag_str))
+                            }
+                          // 0은 파일이름 
+                          // 1부터 태그
+                           for (let i = 0; i < image_list.length; i++) {
+                            // console.log(image_list[i])
+
+                            // console.log(hash_tag[i])
+                        //     for (let j = 0; j < hash_tag[i].length; j++){
+                        //       console.log(hash_tag[i][j])
+                             
+                        //     }
+                            makeCard(image_list[i],hash_tag_str[i])
+                        }
+                          let img_0  = "2a6e42f0-5b37-4c6d-8cb8-fc15531139d2.jpg"
+// 해시태그 $ 붙인걸로 바꾸기
+
+                          
+                          // makeCard(img_0,a)
+
+//                           for (let i = 0; i < articles.length; i++) {
+//       makeCard(articles[0]["image"][i]['image_path'],articles[i]["image"][i]["tag"][i] )
+// }
+                        }
+                    })
+                    }
+
+                    function makeCard(image_name, comment) {
+                        let temp_html = `
+                        <div class="col-md-20 mb-10" >
+                        <div class="card">
+                                            <img class="card-img-top" src="https://mybide.s3.amazonaws.com/user_image/${image_name}" alt="Card image cap">
+                                            
+                                            <div class="card-body">
+                                            <p class="card-text comment">#${comment}</p>
+                                            </div>
+                                        </div>`;
+                        $("#cards-box").append(temp_html);
+                        
+                        }        
+
+
+
 
 function getProducts() {
 $.get("products.json", (products) => {
@@ -590,9 +706,9 @@ function createTemplate(product) {
               <a class="nav-link disabled" href="#">Disabled</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <form class="form-inline my-2 my-lg-0"  method="GET">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="post-url">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="postArticle()">Search</button>
           </form>
         </div>
       </nav>
@@ -603,12 +719,29 @@ function createTemplate(product) {
 
 
   <div class="row" id="product">
-    {% for image_name in image_names %}
+
+    <div id="cards-box" class="card-columns">
+      <!-- <div class="card">
+          <img class="card-img-top"
+               src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
+               alt="Card image cap">
+          <div class="card-body">
+              <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+              <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
+              <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+          </div>
+      </div> -->
+
+
+
+
+
+
+    <!-- {% for image_name in image_names %}
     <div class="col-md-4 mb-5" >
-        <!-- class="img-fluid w-100" -->
         <div >
             <div class="view zoom overlay rounded z-depth-2" style="height: 130px;">
-              <img src="{{url_for('img_gallery.send_image', filename = image_name)}}" , width="200" , height="100" style="margin: 10px;" class="img-thumbnail">
+              <img src="image/1.jpg" , width="200" , height="100" style="margin: 10px;" class="img-thumbnail">
 
                 <div class="mask">
 
@@ -616,22 +749,19 @@ function createTemplate(product) {
                 </div>
                 </a>
             </div>
-            <div class="text-center pt-4"><br>
-                <!-- <h5>#가나 #다라 #마바</h5> -->
-                <!-- <p><span class="mr-1"><strong>#해시태그들어갈자리다 이말이야</strong></span></p> -->
+            <div class="text-center pt-4">
+                <h5>#가나 #다라 #마바</h5>
                 <p>
-                  {% for hash_tag in hash_tags%}
-                    <span class="badge badge-primary">{{hash_tag}}</span>
-                    <!-- <span class="badge badge-primary">#Two</span>
+                    <span class="badge badge-primary">#One</span>
+                    <span class="badge badge-primary">#Two</span>
                     <span class="badge badge-primary">#Three</span>
-                    <span class="badge badge-primary">#Four</span> -->
-                  {% endfor %}
+                    <span class="badge badge-primary">#Four</span>
 
                 </p>
             </div>
         </div>
     </div>
-    {% endfor %}  
+    {% endfor %}   -->
 
 
 <div class="content">
