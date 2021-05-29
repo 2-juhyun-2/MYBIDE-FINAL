@@ -1,19 +1,7 @@
-{% extends 'base.html' %}
-{% block content %}
+
+
 <head>
-  
 <style>
-
-
-jumbotron {
-  font-weight:bold;  
-	margin:0;
-	color:#edf3ff;
-	background:#c8c8c8;
-	background:url(https://hdqwalls.com/download/material-design-4k-2048x1152.jpg) fixed;
-	background-size: cover;
-	font:600 16px/18px 'Open Sans',sans-serif;
-}
 .loader-overlay {
   position: absolute;
   top: 0;
@@ -48,125 +36,9 @@ jumbotron {
 <script>
 
 $(document).ready(() => {
-  // $(".mdb-select").materialSelect();
-  // getProducts();
-  $("#card-box").html("");
-  showArticles();
-  // $("keyword").submit("");
-  // showA();
+  $(".mdb-select").materialSelect();
+  getProducts();
 })
-
-
-
-// function postArticle() {
-//   $.ajax({
-//     type: "POST",
-//     url: "/image/gallary",
-//     data: {},
-//     success: function (response) { // 성공하면
-//       if (response['result'] == 'success') {
-//         alert(response['msg']);
-//       }
-//     }
-//   })
-// }
-function postArticle() {
-  // 1. 유저가 입력한 데이터를 #post-url과 #post-comment에서 가져오기
-  let url = $("#post-url").val();
-  let comment = $("#post-comment").val();
-
-  // 2. memo에 POST 방식으로 메모 생성 요청하기
-  $.ajax({
-    type: "POST", // POST 방식으로 요청하겠다.
-    url: "/image/gallery", // /memo라는 url에 요청하겠다.
-    data: { url_give: url, comment_give: comment}, // 데이터를 주는 방법
-    success: function(response){ // 성공하면
-      if (response["result"] == "success") {
-        alert("포스팅 성공!");
-				// 3. 성공 시 페이지 새로고침하기
-        window.location.reload();
-      } else {
-        alert("서버 오류!")
-      }
-    }
-  })
-}
-
-
-function showArticles() {
-                    $.ajax({
-                        type: "GET",
-                        url: "/image/gallery",
-                        data: {},
-                        success: function(response){
-                        let keyword = response["keyword"] // ex) 
-                        let articles = response["articles"];
-                        let image_list = response["image_list"]
-                        let hash_tag = response['hash_tag']
-                       
-                          console.log(image_list)
-                          console.log(hash_tag[0])
-                          console.log(hash_tag[0].length)
-
-                          // let a = String(hash_tag[0])
-                          // console.log(typeof(a))
-                          // let regexFor
-                          // let b = a.replaceAll(',',' #')
-                          // console.log(b)
-                          let hash_tag_str = []
-
-                          for (let j = 0; j < hash_tag.length; j++){
-                            console.log(hash_tag[j])
-                            let a = String(hash_tag[j])
-                            console.log(typeof(a))
-                            let regexFor
-                            let b = a.replaceAll(',',' #')
-                            // console.log(b)
-                            hash_tag_str.push(b)
-                            console.log(hash_tag_str)
-                            console.log(typeof(hash_tag_str))
-                            }
-                          // 0은 파일이름 
-                          // 1부터 태그
-                           for (let i = 0; i < image_list.length; i++) {
-                            // console.log(image_list[i])
-
-                            // console.log(hash_tag[i])
-                        //     for (let j = 0; j < hash_tag[i].length; j++){
-                        //       console.log(hash_tag[i][j])
-                             
-                        //     }
-                            makeCard(image_list[i],hash_tag_str[i])
-                        }
-                          let img_0  = "2a6e42f0-5b37-4c6d-8cb8-fc15531139d2.jpg"
-// 해시태그 $ 붙인걸로 바꾸기
-
-                          
-                          // makeCard(img_0,a)
-
-//                           for (let i = 0; i < articles.length; i++) {
-//       makeCard(articles[0]["image"][i]['image_path'],articles[i]["image"][i]["tag"][i] )
-// }
-                        }
-                    })
-                    }
-
-                    function makeCard(image_name, comment) {
-                        let temp_html = `
-                        <div class="col-md-20 mb-10" >
-                        <div class="card">
-                                            <img class="card-img-top" src="https://mybide.s3.amazonaws.com/user_image/${image_name}" alt="Card image cap">
-                                            
-                                            <div class="card-body">
-                                            <p class="card-text comment">#${comment}</p>
-                                            </div>
-                                        </div>`;
-                        $("#cards-box").append(temp_html);
-                        
-                        }        
-
-
-
 
 function getProducts() {
 $.get("products.json", (products) => {
@@ -214,16 +86,77 @@ function createTemplate(product) {
     <header>
         
       <!-- Navbar -->
-      
+      <nav class="navbar navbar-expand-md navbar-light fixed-top scrolling-navbar navbar-transparent">
+  
+        <div class="container-fluid">
+  
+          <!-- Brand -->
+          <a class="navbar-brand" href="https://mdbecommerce.com/">
+            <i class="fab fa-mdb fa-3x" alt="mdb logo"></i>
+          </a>
+  
+          <!-- Collapse button -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+            aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+  
+          <!-- Links -->
+          <div class="collapse navbar-collapse" id="basicExampleNav">
+  
+            <!-- Right -->
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a href="#!" class="nav-link navbar-link-2 waves-effect">
+                  <span class="badge badge-pill red">1</span>
+                  <i class="fas fa-shopping-cart pl-0"></i>
+                </a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle waves-effect" id="navbarDropdownMenuLink3" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="true">
+                  <i class="united kingdom flag m-0"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="#!">Action</a>
+                  <a class="dropdown-item" href="#!">Another action</a>
+                  <a class="dropdown-item" href="#!">Something else here</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a href="#!" class="nav-link waves-effect">
+                  Shop
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#!" class="nav-link waves-effect">
+                  Contact
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#!" class="nav-link waves-effect">
+                  Sign in
+                </a>
+              </li>
+              <li class="nav-item pl-2 mb-2 mb-md-0">
+                <a href="#!" type="button"
+                  class="btn btn-outline-info btn-md btn-rounded btn-navbar waves-effect waves-light">Sign
+                  up</a>
+              </li>
+            </ul>
+  
+          </div>
+          <!-- Links -->
+        </div>
+  
+      </nav>
       <!-- Navbar -->
   
       <div class="jumbotron jumbotron-image color-grey-light"
-        style=
-        "background-image: url('https://hdqwalls.com/download/material-design-4k-2048x1152.jpg'); height: 400px;"
-        >
+        style="background-image: url('https://mdbootstrap.com/img/Photos/Others/clothes(5)-crop.jpg'); height: 400px;">
         <div class="mask rgba-black-strong d-flex align-items-center h-100">
           <div class="container text-center white-text py-5">
-             <h1 style="font-weight:bold; font-size: 90px; color:white;">Search Gallery</h1> 
+            <h1 class="mb-0">Shop</h1>
           </div>
         </div>
       </div>
@@ -657,9 +590,9 @@ function createTemplate(product) {
               <a class="nav-link disabled" href="#">Disabled</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0"  method="GET">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="post-url">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="postArticle()">Search</button>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
       </nav>
@@ -670,28 +603,12 @@ function createTemplate(product) {
 
 
   <div class="row" id="product">
-
-    <div id="cards-box" class="card-columns">
-      <!-- <div class="card">
-          <img class="card-img-top"
-               src="https://www.eurail.com/content/dam/images/eurail/Italy%20OCP%20Promo%20Block.adaptive.767.1535627244182.jpg"
-               alt="Card image cap">
-          <div class="card-body">
-              <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
-              <p class="card-text">기사의 요약 내용이 들어갑니다. 동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화 삼천리 화려강산...</p>
-              <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
-          </div>
-      </div> -->
-
-
-
-
-
-
-    <!-- {% for image_name in image_names %}
+    {% for image_name in image_names %}
     <div class="col-md-4 mb-5" >
+        <!-- class="img-fluid w-100" -->
         <div >
             <div class="view zoom overlay rounded z-depth-2" style="height: 130px;">
+              <img src="{{url_for('img_gallery.send_image', filename = image_name)}}" , width="200" , height="100" style="margin: 10px;" class="img-thumbnail">
 
                 <div class="mask">
 
@@ -699,19 +616,22 @@ function createTemplate(product) {
                 </div>
                 </a>
             </div>
-            <div class="text-center pt-4">
-                <h5>#가나 #다라 #마바</h5>
+            <div class="text-center pt-4"><br>
+                <!-- <h5>#가나 #다라 #마바</h5> -->
+                <!-- <p><span class="mr-1"><strong>#해시태그들어갈자리다 이말이야</strong></span></p> -->
                 <p>
-                    <span class="badge badge-primary">#One</span>
-                    <span class="badge badge-primary">#Two</span>
+                  <!-- {% for hash_tag in hash_tags%} -->
+                    <!-- <span class="badge badge-primary">{{hash_tag}}</span> -->
+                    <!-- <span class="badge badge-primary">#Two</span>
                     <span class="badge badge-primary">#Three</span>
-                    <span class="badge badge-primary">#Four</span>
+                    <span class="badge badge-primary">#Four</span> -->
+                  <!-- {% endfor %} -->
 
                 </p>
             </div>
         </div>
     </div>
-    {% endfor %}   -->
+    {% endfor %}  
 
 
 <div class="content">
@@ -773,7 +693,161 @@ function createTemplate(product) {
     </main>
     <!--Main layout-->
   
-    
+    <!-- Footer -->
+    <footer class="page-footer font-small elegant-color">
+  
+      <div class="color-primary">
+        <div class="container">
+  
+          <!-- Grid row-->
+          <div class="row py-4 d-flex align-items-center">
+  
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+              <h6 class="mb-0">Get connected with us on social networks!</h6>
+            </div>
+            <!-- Grid column -->
+  
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-7 text-center text-md-right">
+  
+              <!-- Facebook -->
+              <a class="fb-ic">
+                <i class="fab fa-facebook-f white-text mr-4"> </i>
+              </a>
+              <!-- Twitter -->
+              <a class="tw-ic">
+                <i class="fab fa-twitter white-text mr-4"> </i>
+              </a>
+              <!-- Google +-->
+              <a class="gplus-ic">
+                <i class="fab fa-google-plus-g white-text mr-4"> </i>
+              </a>
+              <!--Linkedin -->
+              <a class="li-ic">
+                <i class="fab fa-linkedin-in white-text mr-4"> </i>
+              </a>
+              <!--Instagram-->
+              <a class="ins-ic">
+                <i class="fab fa-instagram white-text"> </i>
+              </a>
+  
+            </div>
+            <!-- Grid column -->
+  
+          </div>
+          <!-- Grid row-->
+  
+        </div>
+      </div>
+  
+      <!-- Footer Links -->
+      <div class="container text-center text-md-left pt-4 pt-md-5">
+  
+        <!-- Grid row -->
+        <div class="row mt-1 mt-md-0 mb-4 mb-md-0">
+  
+          <!-- Grid column -->
+          <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
+  
+            <!-- Links -->
+            <h5>About me</h5>
+            <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60">
+  
+            <p class="foot-desc mb-0">Here you can use rows and columns to organize your footer content. Lorem
+              ipsum dolor sit amet,
+              consectetur
+              adipisicing elit.</p>
+  
+          </div>
+          <!-- Grid column -->
+  
+          <hr class="clearfix w-100 d-md-none">
+  
+          <!-- Grid column -->
+          <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
+  
+            <!-- Links -->
+            <h5>Products</h5>
+            <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60">
+  
+            <ul class="list-unstyled foot-desc">
+              <li class="mb-2">
+                <a href="#!">MDBootstrap</a>
+              </li>
+              <li class="mb-2">
+                <a href="#!">MDWordPress</a>
+              </li>
+              <li class="mb-2">
+                <a href="#!">BrandFlow</a>
+              </li>
+              <li class="mb-2">
+                <a href="#!">Bootstrap Angular</a>
+              </li>
+            </ul>
+  
+          </div>
+          <!-- Grid column -->
+  
+          <hr class="clearfix w-100 d-md-none">
+  
+          <!-- Grid column -->
+          <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
+  
+            <!-- Links -->
+            <h5>Useful links</h5>
+            <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60">
+  
+            <ul class="list-unstyled foot-desc">
+              <li class="mb-2">
+                <a href="#!">Your Account</a>
+              </li>
+              <li class="mb-2">
+                <a href="#!">Become an Affiliate</a>
+              </li>
+              <li class="mb-2">
+                <a href="#!">Shipping Rates</a>
+              </li>
+              <li class="mb-2">
+                <a href="#!">Help</a>
+              </li>
+            </ul>
+  
+          </div>
+          <!-- Grid column -->
+  
+          <hr class="clearfix w-100 d-md-none">
+  
+          <!-- Grid column -->
+          <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
+  
+            <!-- Links -->
+            <h5>Contacts</h5>
+            <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60">
+  
+            <ul class="fa-ul foot-desc ml-4">
+              <li class="mb-2"><span class="fa-li"><i class="far fa-map"></i></span>New York, Avenue Street 10
+              </li>
+              <li class="mb-2"><span class="fa-li"><i class="fas fa-phone-alt"></i></span>042 876 836 908</li>
+              <li class="mb-2"><span class="fa-li"><i class="far fa-envelope"></i></span>company@example.com</li>
+              <li><span class="fa-li"><i class="far fa-clock"></i></span>Monday - Friday: 10-17</li>
+            </ul>
+  
+          </div>
+          <!-- Grid column -->
+  
+        </div>
+        <!-- Grid row -->
+  
+      </div>
+      <!-- Footer Links -->
+  
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+      </div>
+      <!-- Copyright -->
+  
+    </footer>
+    <!-- Footer -->
   </body>
-
-  {% endblock content %}

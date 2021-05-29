@@ -19,7 +19,7 @@ class hashTag:
         a = list(db.users.find({"image.image_path":image_name},{"_id":0,"image.image_path":1,"image.tag":1}))
         # print('\na',a)
         a = str(a)
-        a = re.sub('[-=+,#/\?:^$@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]',"",a)
+        a = re.sub('[=+,#/\?:^$@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]',"",a)
         a = a.replace('{','')
         a = a.replace('}','')
         a = a.replace('tag','')
@@ -42,8 +42,8 @@ class hashTag:
                 vv = b.count('')
                 for p in range(0,vv):
                     b.remove('')
-        del b[0]
         # print('bbb',b,'\n\n')
+        del b[0]
         b = tuple(b)
         # print('bbb',b,'\n\n')
 
